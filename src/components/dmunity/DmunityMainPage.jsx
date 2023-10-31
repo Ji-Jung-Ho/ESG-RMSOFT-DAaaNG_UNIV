@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+/*import React, { useState } from 'react';
 
 const getCategoryImage = category => {
   switch (category) {
@@ -129,3 +129,5 @@ function DmunityMainPage() {
   );
 };
 export default DmunityMainPage() 
+
+*/
