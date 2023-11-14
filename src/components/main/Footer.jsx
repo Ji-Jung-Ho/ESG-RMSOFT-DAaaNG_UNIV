@@ -1,5 +1,4 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -7,11 +6,11 @@ export default function Footer() {
       <div className="container">
         <div className="left">
           <ul>
-          <Link to='/TermsOfUse'><li className='left-menu'>이용약관</li></Link>
+            <li className='left-menu'>이용약관</li>
             <li><i>|</i></li>
-          <Link to='/'><li className='left-menu'>마케팅 수신동의</li></Link>
-          <li><i>|</i></li>
-            <Link to='/'><li className='left-menu'>개인정보처리방침</li></Link>
+            <li className='left-menu'>이용안내</li>
+            <li><i>|</i></li>
+            <li className='left-menu'>개인정보처리방침</li>
           </ul>
         </div>
         <div className="center">
