@@ -1,0 +1,34 @@
+{
+  "dstaModalData": [
+    {
+      "id": 1,
+      "imgSrcArray": [
+        "./img/dsta/weeklydsta1.jpg",
+        "./img/dsta/weeklydsta2.jpg",
+        "./img/dsta/weeklydsta3.jpg"
+      ],
+      "writerProfileImgSrc": "./img/main/best-dsta-profile.png",
+      "writerUserId": "꿈이언니",
+      "contentText": "오늘도 꿈이랑 산책다녀왔어요~",
+      "contentTag": "#꿈이랑 #산책 #행복해",
+      "contentLikes": "10",
+      "contentTime": "2",
+      "comments": [
+        {
+          "commentProfileImgSrc": "./img/main/best-dsta-profile.png",
+          "commentUserId": "Gavin",
+          "commentText": "꿈이 귀여워~",
+          "commentDate": "2023.11.14",
+          "commentLikes": "3"
+        },
+        {
+          "commentProfileImgSrc": "./img/main/best-dsta-profile.png",
+          "commentUserId": "Gavin",
+          "commentText": "붕어빵ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ",
+          "commentDate": "2023.11.15",
+          "commentLikes": "5"
+        }
+      ]
+    }
+  ]
+}
