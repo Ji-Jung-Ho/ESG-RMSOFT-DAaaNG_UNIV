@@ -4,15 +4,15 @@ import axios from 'axios';
 
 function getCategoryImage(category) {       //카테고리 별 아이콘 설정
   switch (category) {
-    case '1':
+    case 1:
       return '../img/dmunity/eat.png';
-    case '2':
+    case 2:
       return '../img/dmunity/sick.png';
-    case '3':
+    case 3:
       return '../img/dmunity/play.png';
-    case '4':
+    case 4:
       return '../img/dmunity/how.png';
-    case '5':
+    case 5:
       return '../img/dmunity/etc.png';
     default:
       return '../img/dmunity/notification.png';
@@ -33,7 +33,7 @@ export default function DmunityMainPage() {
 
   useEffect(() => {
     axios({
-      url: 'http://localhost:8080/dmunity/all',
+      url: 'http://localhost:8080/dmunity/dmunityMainPage',
       method: 'GET'
     })
       // 성공
@@ -49,31 +49,51 @@ export default function DmunityMainPage() {
 
   const onClickEatToggle = () => {
     setIsEatToggle(!isEatToggle);
+    setIsSickToggle(false)
+    setIsHowToggle(false)
+    setIsPlayToggle(false)
+    setIsEtcToggle(false)
   };
 
   const onClickSickToggle = () => {
     setIsSickToggle(!isSickToggle);
+    setIsEatToggle(false)
+    setIsHowToggle(false)
+    setIsPlayToggle(false)
+    setIsEtcToggle(false)
   };
 
   const onClickPlayToggle = () => {
     setIsPlayToggle(!isPlayToggle);
+    setIsSickToggle(false)
+    setIsHowToggle(false)
+    setIsEatToggle(false)
+    setIsEtcToggle(false)
   };
 
   const onClickHowToggle = () => {
     setIsHowToggle(!isHowToggle);
+    setIsSickToggle(false)
+    setIsEatToggle(false)
+    setIsPlayToggle(false)
+    setIsEtcToggle(false)
   };
 
   const onClickEtcToggle = () => {
     setIsEtcToggle(!isEtcToggle);
+    setIsSickToggle(false)
+    setIsHowToggle(false)
+    setIsPlayToggle(false)
+    setIsEatToggle(false)
   };
 
   useEffect(() => {
     const updatedFilteredPosts = dmunityData.filter((post) => {
-      if (isEatToggle && post.category === '먹어요') return true;
-      if (isSickToggle && post.category === '아파요') return true;
-      if (isPlayToggle && post.category === '놀아요') return true;
-      if (isHowToggle && post.category === '어때요') return true;
-      if (isEtcToggle && post.category === '기타') return true;
+      if (isEatToggle && post.dmunityCategory === 1) return true;
+      if (isSickToggle && post.dmunityCategory === 2) return true;
+      if (isPlayToggle && post.dmunityCategory === 3) return true;
+      if (isHowToggle && post.dmunityCategory === 4) return true;
+      if (isEtcToggle && post.dmunityCategory === 5) return true;
       return false;
     });
     setFilteredPosts(updatedFilteredPosts);
@@ -138,7 +158,7 @@ export default function DmunityMainPage() {
                     <img className="category" src={getCategoryImage(post.dmunityCategory)} alt='' />
                   </div>
                   <div className='postMiddle'>
-                    <Link to='/dmunity/:dmunityNo'>
+                    <Link to={`/dmunity/${post.dmunityNo}`}>
                       <div className="title">{strCut(post.dmunityTitle)}</div>
                       <div className="contents">{strCut(post.dmunityText)}</div>
                       <div className="info">

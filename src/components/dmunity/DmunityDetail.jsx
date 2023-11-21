@@ -2,17 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import '../../css/dmunityDetail.css';
 function getCategoryImage(category) {       //카테고리 별 아이콘 설정
   switch (category) {
-    case '1':
+    case 1:
       return '../img/dmunity/eat.png';
-    case '2':
+    case 2:
       return '../img/dmunity/sick.png';
-    case '3':
+    case 3:
       return '../img/dmunity/play.png';
-    case '4':
+    case 4:
       return '../img/dmunity/how.png';
-    case '5':
+    case 5:
       return '../img/dmunity/etc.png';
     default:
       return '../img/dmunity/notification.png';
@@ -25,7 +26,7 @@ export default function DmunityDetail() {
 
   useEffect(() => {
     axios({
-      url: `http://localhost:8080/dmunity/${dmunityNo}`,
+      url: `http://localhost:8080/dmunity/dmunityDetail/${dmunityNo}`,
       method: 'GET'
     })
       // 성공
