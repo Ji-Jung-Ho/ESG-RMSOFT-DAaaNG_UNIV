@@ -4,15 +4,15 @@ import axios from 'axios';
 
 function getCategoryImage(category) {       //카테고리 별 아이콘 설정
   switch (category) {
-    case '먹어요':
+    case '1':
       return '../img/dmunity/eat.png';
-    case '아파요':
+    case '2':
       return '../img/dmunity/sick.png';
-    case '놀아요':
+    case '3':
       return '../img/dmunity/play.png';
-    case '어때요':
+    case '4':
       return '../img/dmunity/how.png';
-    case '기타':
+    case '5':
       return '../img/dmunity/etc.png';
     default:
       return '../img/dmunity/notification.png';
@@ -27,18 +27,19 @@ export default function DmunityMainPage() {
   const [isHowToggle, setIsHowToggle] = useState(false);
   const [isEtcToggle, setIsEtcToggle] = useState(false);
 
-  const [postList, setPostList] = useState([]);
+  const [dmunityData,setDmunityData] = useState([]);
   const [inputValue, setInputValue] = useState(''); //입력 값 관리
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
     axios({
-      url: './data/dmunity.json',
+      url: 'http://localhost:8080/dmunity/all',
       method: 'GET'
     })
       // 성공
       .then((res) => {
-        setPostList(res.data.dmunityMain)
+        setDmunityData(res.data)
+        console.log(res.data)
       })
       // 에러
       .catch((err) => {
@@ -67,7 +68,7 @@ export default function DmunityMainPage() {
   };
 
   useEffect(() => {
-    const updatedFilteredPosts = postList.filter((post) => {
+    const updatedFilteredPosts = dmunityData.filter((post) => {
       if (isEatToggle && post.category === '먹어요') return true;
       if (isSickToggle && post.category === '아파요') return true;
       if (isPlayToggle && post.category === '놀아요') return true;
@@ -76,7 +77,7 @@ export default function DmunityMainPage() {
       return false;
     });
     setFilteredPosts(updatedFilteredPosts);
-  }, [postList, isEatToggle, isSickToggle, isPlayToggle, isHowToggle, isEtcToggle]);
+  }, [dmunityData, isEatToggle, isSickToggle, isPlayToggle, isHowToggle, isEtcToggle]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -88,8 +89,6 @@ export default function DmunityMainPage() {
     }
     return str
   }
-
-  const [eatImg, setEatImg] = useState("./img/eat.png")
 
   // 페이징 시작
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
@@ -136,44 +135,44 @@ export default function DmunityMainPage() {
               ? currentItems.map((post, idx) => (
                 <div key={idx} id="post">
                   <div className='postLeft'>
-                    <img className="category" src={getCategoryImage(post.category)} alt={post.category} />
+                    <img className="category" src={getCategoryImage(post.dmunityCategory)} alt='' />
                   </div>
                   <div className='postMiddle'>
-                    <Link to='/dmunity-detail'>
-                      <div className="title">{strCut(post.title)}</div>
-                      <div className="contents">{strCut(post.contents)}</div>
+                    <Link to='/dmunity/:dmunityNo'>
+                      <div className="title">{strCut(post.dmunityTitle)}</div>
+                      <div className="contents">{strCut(post.dmunityText)}</div>
                       <div className="info">
-                        <span className="view"><img src='../img/dmunity/watch.png' alt='view' /> <p>{post.view}</p></span>
-                        <span className="likes"><img src='../img/dmunity/heart.png' alt='likes' /> <p>{post.likes}</p></span>
-                        <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{post.comments}</p></span>
+                        <span className="view"><img src='../img/dmunity/watch.png' alt='hit' /> <p>{post.dmunityHit}</p></span>
+                        <span className="likes"><img src='../img/dmunity/heart.png' alt='like' /> <p>{post.dmunityLike}</p></span>
+                        <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{post.dmunityComments}</p></span>
                       </div>
                     </Link>
                   </div>
                   <div className='postRight'>
-                    <div className="date">{post.date}</div>
+                    <div className="date">{post.dmiunityDate}</div>
                     <div className='userid'>{post.userid}</div>
                   </div>
                 </div>
               ))
               // 전체 게시글을 보여줌
-              : postList.slice(indexOfFirstItem, indexOfLastItem).map((post, idx) => (
+              : dmunityData.slice(indexOfFirstItem, indexOfLastItem).map((post, idx) => (
                 <div key={idx} id="post">
                   <div className='postLeft'>
-                    <img className="category" src={getCategoryImage(post.category)} alt={post.category} />
+                    <img className="category" src={getCategoryImage(post.dmunityCategory)} alt='' />
                   </div>
                   <div className='postMiddle'>
-                    <Link to='/dmunity-detail'>
-                      <div className="title">{strCut(post.title)}</div>
-                      <div className="contents">{strCut(post.contents)}</div>
+                    <Link to={`/dmunity/${post.dmunityNo}`}>
+                      <div className="title">{strCut(post.dmunityTitle)}</div>
+                      <div className="contents">{strCut(post.dmunityText)}</div>
                       <div className="info">
-                        <span className="view"><img src='../img/dmunity/watch.png' alt='view' /> <p>{post.view}</p></span>
-                        <span className="likes"><img src='../img/dmunity/heart.png' alt='likes' /> <p>{post.likes}</p></span>
-                        <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{post.comments}</p></span>
+                        <span className="view"><img src='../img/dmunity/watch.png' alt='view' /> <p>{post.dmunityHit}</p></span>
+                        <span className="likes"><img src='../img/dmunity/heart.png' alt='likes' /> <p>{post.dmunityLike}</p></span>
+                        <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{post.dmunityComments}</p></span>
                       </div>
                     </Link>
                   </div>
                   <div className='postRight'>
-                    <div className="date">{post.date}</div>
+                    <div className="date">{post.dmunityDate.substr(0,10)}</div>
                     <div className='userid'>{post.userid}</div>
                   </div>
                 </div>
@@ -187,7 +186,7 @@ export default function DmunityMainPage() {
             <button onClick={() => handleClickPage(currentPage - 1)} disabled={currentPage === 1}>
               &lt;
             </button>
-            {Array.from({ length: Math.ceil(postList.length / itemsPerPage) }, (_, index) => (
+            {Array.isArray(dmunityData) && Array.from({ length: Math.ceil(dmunityData.length / itemsPerPage) }, (_, index) => (
               <button
                 key={index}
                 onClick={() => handleClickPage(index + 1)}
@@ -197,7 +196,7 @@ export default function DmunityMainPage() {
               </button>
             ))}
             {/* 다음페이지 버튼 */}
-            < button onClick={() => handleClickPage(currentPage + 1)} disabled={currentPage === Math.ceil(postList.length / itemsPerPage)}>
+            < button onClick={() => handleClickPage(currentPage + 1)} disabled={currentPage === Math.ceil(dmunityData.length / itemsPerPage)}>
               &gt;
             </button>
           </div>
