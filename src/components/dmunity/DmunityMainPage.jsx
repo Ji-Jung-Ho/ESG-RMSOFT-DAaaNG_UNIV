@@ -21,16 +21,16 @@ function getCategoryImage(category) {       //카테고리 별 아이콘 설정
 
 export default function DmunityMainPage() {
 
-  const [postList, setPostList] = useState([]);
+  const [dData, setDData] = useState([]);
 
   useEffect(() => {
     axios({
-      url: './data/dmunity.json',
+      url: 'http://localhost:8080/dmunity/all',
       method: 'GET'
     })
       // 성공
       .then((res) => {
-        setPostList(res.data.dmunityMain)
+        setDData(res.data)
         console.log(res.data)
       })
       // 에러
@@ -51,9 +51,6 @@ export default function DmunityMainPage() {
     }
     return str
   }
-
-  const [eatImg, setEatImg] = useState("../img/eat.png")
-
 
   return (
     <div id="dmunity">
@@ -76,26 +73,26 @@ export default function DmunityMainPage() {
         </div>
         <div className='row2'>
           {
-            postList && postList.map((postList, idx) => {
+            dData && dData.map((item, idx) => {
               return (
                 <div id="post">
                   <div className='postLeft'>
-                    <img className="category" src={getCategoryImage(postList.category)} alt={postList.category} />
+                    <img className="category" src={getCategoryImage(item.dmunityCategory)} alt='' />
                   </div>
                   <div className='postMiddle'>
-                    <Link to='/dmunity-detail'>
-                      <div className="title">{strCut(postList.title)}</div>
-                      <div className="contents">{strCut(postList.contents)}</div>
+                    <Link to={`/dmunity-detail/${item.dmunityNo}`}>
+                      <div className="title">{strCut(item.dmunityTitle)}</div>
+                      <div className="contents">{strCut(item.dmunityText)}</div>
                       <div className="info">
-                        <span className="view"><img src='../img/dmunity/watch.png' alt='view' /> <p>{postList.view}</p></span>
-                        <span className="likes"><img src='../img/dmunity/heart.png' alt='likes' /> <p>{postList.likes}</p></span>
-                        <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{postList.comments}</p></span>
+                        <span className="view"><img src='../img/dmunity/watch.png' alt='view' /> <p>{item.dmunityHit}</p></span>
+                        <span className="likes"><img src='../img/dmunity/heart.png' alt='likes' /> <p>{item.dmunityLike}</p></span>
+                        <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>12</p></span>
                       </div>
                     </Link>
                   </div>
                   <div className='postRight'>
-                    <div className="date">{postList.date}</div>
-                    <div className='userid'>{postList.userid}</div>
+                    <div className="date">{item.dmunityDate.substr(0,10)}</div>
+                    <div className='userid'>{item.userid}</div>
                   </div>
                 </div>
               );

@@ -38,7 +38,7 @@ export default function Wrap() {
               <Route path='dsta-write' element={<DstaWrite />} />
               <Route path='dsta-edit' element={<DstaEdit />} />
               <Route path='dmunity' element={<DmunityMainPage />} />
-              <Route path='dmunity-detail' element={<DmunityDetail />} />
+              <Route path='dmunity-detail/:dmunityNo' element={<DmunityDetail />} />
               <Route path='dmunity-write' element={<DmunityWrite />} />
               <Route path='dmunity-edit' element={<DmunityEdit />} />
               <Route path='dmap' element={<Dmap />} />
