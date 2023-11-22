@@ -26,26 +26,7 @@ export default function DmunityMainPage() {
   const [isPlayToggle, setIsPlayToggle] = useState(false);
   const [isHowToggle, setIsHowToggle] = useState(false);
   const [isEtcToggle, setIsEtcToggle] = useState(false);
-
-  const [dmunityData,setDmunityData] = useState([]);
-  const [inputValue, setInputValue] = useState(''); //입력 값 관리
-  const [filteredPosts, setFilteredPosts] = useState([]);
-
-  useEffect(() => {
-    axios({
-      url: 'http://localhost:8080/dmunity/dmunityMainPage',
-      method: 'GET'
-    })
-      // 성공
-      .then((res) => {
-        setDmunityData(res.data)
-        console.log(res.data)
-      })
-      // 에러
-      .catch((err) => {
-        console.log(`AXIOS 실패!${err}`);
-      });
-  }, []);
+  const [categoryNo, setCategoryNo] = useState(0);
 
   const onClickEatToggle = () => {
     setIsEatToggle(!isEatToggle);
@@ -53,6 +34,8 @@ export default function DmunityMainPage() {
     setIsHowToggle(false)
     setIsPlayToggle(false)
     setIsEtcToggle(false)
+    setCategoryNo(isEatToggle?0:1)
+    setPageCount(1);
   };
 
   const onClickSickToggle = () => {
@@ -61,6 +44,8 @@ export default function DmunityMainPage() {
     setIsHowToggle(false)
     setIsPlayToggle(false)
     setIsEtcToggle(false)
+    setCategoryNo(isSickToggle?0:2)
+    setPageCount(1);
   };
 
   const onClickPlayToggle = () => {
@@ -69,6 +54,8 @@ export default function DmunityMainPage() {
     setIsHowToggle(false)
     setIsEatToggle(false)
     setIsEtcToggle(false)
+    setCategoryNo(isPlayToggle?0:3)
+    setPageCount(1);
   };
 
   const onClickHowToggle = () => {
@@ -77,6 +64,8 @@ export default function DmunityMainPage() {
     setIsEatToggle(false)
     setIsPlayToggle(false)
     setIsEtcToggle(false)
+    setCategoryNo(isHowToggle?0:4)
+    setPageCount(1);
   };
 
   const onClickEtcToggle = () => {
@@ -85,48 +74,86 @@ export default function DmunityMainPage() {
     setIsHowToggle(false)
     setIsPlayToggle(false)
     setIsEatToggle(false)
+    setCategoryNo(isEtcToggle?0:5)
+    setPageCount(1);
   };
 
-  useEffect(() => {
-    const updatedFilteredPosts = dmunityData.filter((post) => {
-      if (isEatToggle && post.dmunityCategory === 1) return true;
-      if (isSickToggle && post.dmunityCategory === 2) return true;
-      if (isPlayToggle && post.dmunityCategory === 3) return true;
-      if (isHowToggle && post.dmunityCategory === 4) return true;
-      if (isEtcToggle && post.dmunityCategory === 5) return true;
-      return false;
-    });
-    setFilteredPosts(updatedFilteredPosts);
-  }, [dmunityData, isEatToggle, isSickToggle, isPlayToggle, isHowToggle, isEtcToggle]);
+  const [dmunityData,setDmunityData] = useState([]);  //DB
+  const [inputValue, setInputValue] = useState(''); //입력 값 관리
+  const [pageCount, setPageCount] = useState(1);  //현재 페이지
+  const [totalPage, setTotalPage] = useState(''); //총 페이지 수
+  
+  // const onClickSortingHit = () => {
 
-  const handleInputChange = (e) => {
+  // } 인기순 최신순 필터만 만들면 끝남
+
+  useEffect(() => {
+    axios({
+      url: 'http://localhost:8080/dmunity/dmunityMainPage',
+      method: 'GET',
+      params: {
+        page: pageCount,
+        category: categoryNo
+      }
+    })
+      // 성공
+      .then((res) => {
+        setDmunityData(res.data)
+        console.log(categoryNo)
+      })
+      // 에러
+      .catch((err) => {
+        console.log(`AXIOS 실패!${err}`);
+      });
+    axios({
+      url: "http://localhost:8080/dmunity/totalPageCount",
+      method: 'GET',
+      params:{
+        category: categoryNo
+      }
+
+    })
+      // 성공
+      .then((res) => {
+        setTotalPage(res.data)
+        console.log(res.data)
+      })
+      // 에러
+      .catch((err) => {
+        console.log(`AXIOS 실패!${err}`);
+      });
+  }, [pageCount, categoryNo]);
+
+  useEffect(() => {
+    axios({
+      url: "http://localhost:8080/dmunity/totalPageCount",
+      method: 'GET'
+    })
+      // 성공
+      .then((res) => {
+        setTotalPage(res.data)
+        console.log(res.data)
+      })
+      // 에러
+      .catch((err) => {
+        console.log(`AXIOS 실패!${err}`);
+      });
+      }, [pageCount]);
+
+  const handleInputChange = (e) => {  //검색창 입력값
     setInputValue(e.target.value);
   }
 
-  function strCut(str) {
+  function strCut(str) {              //제목 글자 수 45에서 자르기
     if (str.length > 45) {
       return str.substr(0, 45) + '...'
     }
     return str
   }
 
-  // 페이징 시작
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
-  const itemsPerPage = 10; // 한 페이지당 보여질 아이템 수
-
-  // 클릭한 페이지 번호를 받아 currentPage 상태를 업데이트
-  const handleClickPage = (page) => {
-    setCurrentPage(page);
+  const handleClickPage = (page) => {     //페이지네이션 클릭
+    setPageCount(page);
   };
-
-  // 현재 페이지에서 마지막 아이템의 인덱스
-  const indexOfLastItem = currentPage * itemsPerPage;
-  // 현재 페이지에서 첫 번째 아이템의 인덱스
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  // 현재 페이지에 해당하는 아이템만 표시
-  const currentItems = filteredPosts.slice(indexOfFirstItem, indexOfLastItem);
-
-  // 페이징 끝
 
 
   return (
@@ -146,36 +173,11 @@ export default function DmunityMainPage() {
       <div id='postsboard'>
         <div className='row1'>
           <img src='../img/dmunity/posts.png' alt='posts' /><h2>posts</h2>
-          <div className='sorting'>최신순</div>
+          <div className='sorting' >최신순</div>
         </div>
         <div className='row2'>
-          {
-            // 선택한 카테고리에 따라 해당 카테고리인 게시글을 보여줌
-            (isEatToggle || isSickToggle || isPlayToggle || isHowToggle || isEtcToggle)
-              ? currentItems.map((post, idx) => (
-                <div key={idx} id="post">
-                  <div className='postLeft'>
-                    <img className="category" src={getCategoryImage(post.dmunityCategory)} alt='' />
-                  </div>
-                  <div className='postMiddle'>
-                    <Link to={`/dmunity/${post.dmunityNo}`}>
-                      <div className="title">{strCut(post.dmunityTitle)}</div>
-                      <div className="contents">{strCut(post.dmunityText)}</div>
-                      <div className="info">
-                        <span className="view"><img src='../img/dmunity/watch.png' alt='hit' /> <p>{post.dmunityHit}</p></span>
-                        <span className="likes"><img src='../img/dmunity/heart.png' alt='like' /> <p>{post.dmunityLike}</p></span>
-                        <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{post.dmunityComments}</p></span>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className='postRight'>
-                    <div className="date">{post.dmiunityDate}</div>
-                    <div className='userid'>{post.userid}</div>
-                  </div>
-                </div>
-              ))
-              // 전체 게시글을 보여줌
-              : dmunityData.slice(indexOfFirstItem, indexOfLastItem).map((post, idx) => (
+              {
+              dmunityData.map((post, idx) => (
                 <div key={idx} id="post">
                   <div className='postLeft'>
                     <img className="category" src={getCategoryImage(post.dmunityCategory)} alt='' />
@@ -196,27 +198,27 @@ export default function DmunityMainPage() {
                     <div className='userid'>{post.userid}</div>
                   </div>
                 </div>
-              ))
-          }
+                  ))
+              }
         </div>
         <div className='row3'>
           {/* 댕뮤니티 페이징 */}
           <div className='dmunitymain_pagebox'>
             {/* 이전페이지 버튼 */}
-            <button onClick={() => handleClickPage(currentPage - 1)} disabled={currentPage === 1}>
+            <button onClick={() => handleClickPage(pageCount - 1)} disabled={pageCount === 1}>
               &lt;
             </button>
-            {Array.isArray(dmunityData) && Array.from({ length: Math.ceil(dmunityData.length / itemsPerPage) }, (_, index) => (
+            {totalPage && Array.from({length: totalPage}, (_, index) => (
               <button
                 key={index}
                 onClick={() => handleClickPage(index + 1)}
-                style={{ color: currentPage === index + 1 ? '#AB8B61' : '#EEE1D7' }}
+                style={{ color: pageCount === index + 1 ? '#AB8B61' : '#EEE1D7' }}
               >
                 {index + 1}
               </button>
             ))}
             {/* 다음페이지 버튼 */}
-            < button onClick={() => handleClickPage(currentPage + 1)} disabled={currentPage === Math.ceil(dmunityData.length / itemsPerPage)}>
+            < button onClick={() => handleClickPage(pageCount + 1)} disabled={pageCount >= totalPage}>
               &gt;
             </button>
           </div>
