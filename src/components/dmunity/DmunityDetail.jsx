@@ -1,19 +1,37 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import '../../css/dmunityDetail.css';
+function getCategoryImage(category) {       //카테고리 별 아이콘 설정
+  switch (category) {
+    case 1:
+      return '../img/dmunity/eat.png';
+    case 2:
+      return '../img/dmunity/sick.png';
+    case 3:
+      return '../img/dmunity/play.png';
+    case 4:
+      return '../img/dmunity/how.png';
+    case 5:
+      return '../img/dmunity/etc.png';
+    default:
+      return '../img/dmunity/notification.png';
+  }
+}
 
 export default function DmunityDetail() {
-  const [post, setPost] = useState([]);
+  const [dmunityData, setDmunityData] = useState([]);
+  const {dmunityNo} = useParams()
 
   useEffect(() => {
     axios({
-      url: './data/dmunity.json',
+      url: `http://localhost:8080/dmunity/dmunityDetail/${dmunityNo}`,
       method: 'GET'
     })
       // 성공
       .then((res) => {
-        setPost(res.data.dmunityMain)
-        setPost(post[0])
+        setDmunityData(res.data)
         console.log(res.data)
       })
       // 에러
@@ -57,53 +75,28 @@ export default function DmunityDetail() {
           <img src="./img/dmunity/dmunity.png" alt="" />
           <Link to='/dmunity'><h2>댕뮤니티</h2></Link>
         </div>
-        <div className="content">
-          <div className='pots-title'>
-            <img src='./img/dmunity/notification.png' alt='' />
-            <h2>글 작성 시 유의사항</h2>
-            <div className="profile-box">
-              <img src="./img/dmunity/프로필사진-작성자.png" alt="" />
-              <span>총장</span>
-            </div>
-          </div>
-          <div className='info-box'>
-            <span className="view"><img src='../img/dmunity/watch.png' alt='view' /> <p>112</p></span>
-            <span className="likes"><img src='../img/dmunity/heart.png' alt='likes' /> <p>26</p></span>
-            <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{2 + comment.length}</p></span>
-          </div>
-          <div className="text-area">
-            {/** 임시로 작성한 글, 데이터 받아와지면 삭제*/}
-            <div>
-              <div>안녕하세요. DAaaNG UNIV 총장입니다. </div>
-              <div>댕뮤니티 글 작성 시 유의 사항에 대해 공지하겠습니다.</div>
-              <h2>1. 글 작성 간 카테고리 준수</h2>
-              <div>글 내용에 맞지 않는 카테고리 선택 시 글이 옮겨지거나 삭제 될 수 있습니다.</div>
-              <h3>먹어요</h3>
-              <div>먹어요 카테고리는 반려견 사료, 간식, 영양제 등 후기를 공유하고 추천 받는 카테고리입니다.</div>
-              <div>직접 구입하지 않은 제품을 본인이 구입한 것처럼 올리는 정황 적발시 무통보 삭제 및 제재 대상입니다.</div>
-              <h3>아파요</h3>
-              <div>병원 후기 및 추천, 반려견 아픈 증상, 대처법 등을 공유하는 카테고리입니다.</div>
-              <div>병원 홍보성 글은 무통보 삭제 및 제재 대상입니다.</div>
-              <h3>놀아요</h3>
-              <div>애견식당, 애견 카페, 반려견과의 여행후기 등을 자유롭게 올려주세요.</div>
-              <h3>어때요</h3>
-              <div>반려견 관련 물품 등을 추천받고 후기를 공유하는 카테고리입니다.</div>
-              <div>직접 구입하지 않은 제품을 본인이 구입한 것처럼 올리는 정황 적발시 무통보 삭제 및 제재 대상입니다.</div>
-              <h3>기타</h3>
-              <div>먹어요, 아파요, 놀아요, 어때요 카테고리 외 반려견 관련 내용은 기타 카테고리에 자유롭게 작성해주세요.</div>
-              <h2>2. 커뮤니티 성격과 맞지 않는 내용의 글 작성 금지</h2>
-              <div>반려견 관련 내용이 아닌 개인 사생활 관련 내용 작성은 삼가 주세요.</div>
-              <div>글 삭제와 1회 경고 이후 경고 3회 누적 시 정지 처분을 받을 수 있습니다.</div>
-              <h2>3.상업활동 및 바이럴 마케팅</h2>
-              <div>모든 게시판 내에서 상업 목적의 활동은 강력 제재 대상이며, 브랜드 홍보 목적의 활동 발견 시 강퇴 및 영구 정지 처리됩니다.</div>
-              <h2>4.친목활동</h2>
-              <div>댕뮤니티 게시판 내 회원들간의 친목 활동을 지양합니다. 개인적인 친분 과시나 사적인 친목을 위한 글은 금지입니다.</div>
-            </div>
-          </div>
+              <div className="content">
+                <div className='pots-title'>
+                  <img src={getCategoryImage(dmunityData.dmunityCategory)} alt='' />
+                  <h2>{dmunityData.dmunityTitle}</h2>
+                  <div className="profile-box">
+                    <img src="./img/dmunity/프로필사진-작성자.png" alt="" />
+                    <span>{dmunityData.userid}</span>
+                  </div>
+                </div>
+                <div className='info-box'>
+                  <span className="view"><img src='../img/dmunity/watch.png' alt='view' /> <p>{dmunityData.dmunityHit}</p></span>
+                  <span className="likes"><img src='../img/dmunity/heart.png' alt='likes' /> <p>{dmunityData.dmunityLike}</p></span>
+                  <span className='comments'><img src='../img/dmunity/comments.png' alt='comments' /> <p>{dmunityData.dmunityComments}</p></span>
+                </div>
+                <div className="text-area">
+                  <div>{dmunityData.dmunityText}</div>
+                </div>
+              </div>
           <div className='like_comment_count'>
             <img src='./img/dmunity/heart_click.png' alt='' />
-            <p>좋아요 26개</p>
-            <p>댓글 {2 + comment.length}개</p>
+            <p>좋아요 {dmunityData.dmunityLike}개</p>
+            <p>댓글 {dmunityData.dmunityComments + comment.length}개</p>
           </div>
           <div className='comment_box'>
             {/**임시 댓글  */}
@@ -176,6 +169,5 @@ export default function DmunityDetail() {
           </div>
         </div>
       </div >
-    </div >
   );
 };
