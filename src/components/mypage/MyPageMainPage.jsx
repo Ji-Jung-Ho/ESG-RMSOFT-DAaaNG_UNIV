@@ -195,7 +195,8 @@ export default function MyPageMainPage() {
                 )}
               </div>
             )}
-            {(activeTab === 1 || 2) && <DummyBox activeTab={activeTab}></DummyBox>}
+            {(activeTab === 1 || activeTab === 2) && <DummyBox activeTab={activeTab}></DummyBox>}
+
           </div>
         </section>
       </div>

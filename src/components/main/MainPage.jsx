@@ -19,7 +19,7 @@ export default function MainPage() {
       // 성공
       .then((res) => {
         setBestDsta(res.data.bestDstaData)
-        console.log(res.data)
+        // console.log(res.data)
       })
       // 에러
       .catch((err) => {

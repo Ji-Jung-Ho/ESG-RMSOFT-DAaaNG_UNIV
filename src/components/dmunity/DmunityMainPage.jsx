@@ -26,6 +26,56 @@ export default function DmunityMainPage() {
   const [isPlayToggle, setIsPlayToggle] = useState(false);
   const [isHowToggle, setIsHowToggle] = useState(false);
   const [isEtcToggle, setIsEtcToggle] = useState(false);
+  const [categoryNo, setCategoryNo] = useState(0);
+
+  const onClickEatToggle = () => {
+    setIsEatToggle(!isEatToggle);
+    setIsSickToggle(false)
+    setIsHowToggle(false)
+    setIsPlayToggle(false)
+    setIsEtcToggle(false)
+    setCategoryNo(isEatToggle?0:1)
+    
+  };
+
+  const onClickSickToggle = () => {
+    setIsSickToggle(!isSickToggle);
+    setIsEatToggle(false)
+    setIsHowToggle(false)
+    setIsPlayToggle(false)
+    setIsEtcToggle(false)
+    setCategoryNo(isSickToggle?0:2)
+    
+  };
+
+  const onClickPlayToggle = () => {
+    setIsPlayToggle(!isPlayToggle);
+    setIsSickToggle(false)
+    setIsHowToggle(false)
+    setIsEatToggle(false)
+    setIsEtcToggle(false)
+    setCategoryNo(isPlayToggle?0:3)
+    
+  };
+
+  const onClickHowToggle = () => {
+    setIsHowToggle(!isHowToggle);
+    setIsSickToggle(false)
+    setIsEatToggle(false)
+    setIsPlayToggle(false)
+    setIsEtcToggle(false)
+    setCategoryNo(isHowToggle?0:4)
+    
+  };
+
+  const onClickEtcToggle = () => {
+    setIsEtcToggle(!isEtcToggle);
+    setIsSickToggle(false)
+    setIsHowToggle(false)
+    setIsPlayToggle(false)
+    setIsEatToggle(false)
+    setCategoryNo(isEtcToggle?0:5)
+  };
 
   const [postList, setPostList] = useState([]);
   const [inputValue, setInputValue] = useState(''); //입력 값 관리
@@ -46,34 +96,39 @@ export default function DmunityMainPage() {
       });
   }, []);
 
-  const onClickEatToggle = () => {
-    setIsEatToggle(!isEatToggle);
+  const toggleCategory = (category) => {
+    switch (category) {
+      case '먹어요':
+        setIsEatToggle(!isEatToggle);
+        break;
+      case '아파요':
+        setIsSickToggle(!isSickToggle);
+        break;
+      case '놀아요':
+        setIsPlayToggle(!isPlayToggle);
+        break;
+      case '어때요':
+        setIsHowToggle(!isHowToggle);
+        break;
+      case '기타':
+        setIsEtcToggle(!isEtcToggle);
+        break;
+      default:
+        break;
+    }
   };
 
-  const onClickSickToggle = () => {
-    setIsSickToggle(!isSickToggle);
-  };
-
-  const onClickPlayToggle = () => {
-    setIsPlayToggle(!isPlayToggle);
-  };
-
-  const onClickHowToggle = () => {
-    setIsHowToggle(!isHowToggle);
-  };
-
-  const onClickEtcToggle = () => {
-    setIsEtcToggle(!isEtcToggle);
-  };
 
   useEffect(() => {
     const updatedFilteredPosts = postList.filter((post) => {
-      if (isEatToggle && post.category === '먹어요') return true;
-      if (isSickToggle && post.category === '아파요') return true;
-      if (isPlayToggle && post.category === '놀아요') return true;
-      if (isHowToggle && post.category === '어때요') return true;
-      if (isEtcToggle && post.category === '기타') return true;
-      return false;
+      const categoryToggles = {
+        '먹어요': isEatToggle,
+        '아파요': isSickToggle,
+        '놀아요': isPlayToggle,
+        '어때요': isHowToggle,
+        '기타': isEtcToggle,
+      };
+      return categoryToggles[post.category];
     });
     setFilteredPosts(updatedFilteredPosts);
   }, [postList, isEatToggle, isSickToggle, isPlayToggle, isHowToggle, isEtcToggle]);

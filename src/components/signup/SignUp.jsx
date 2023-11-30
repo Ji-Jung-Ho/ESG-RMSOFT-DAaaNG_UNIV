@@ -95,7 +95,7 @@ export default function SignUp({ 견주, 강아지, isConfirmModalOpenFn, isAgre
     }
     else {
       axios({
-        url: 'https://kiik52.com/daaang/member_select.php',
+        url: 'http://kiik52.dothome.co.kr/daaang/member_select.php',
         method: 'GET'
       })
         .then((res => {
@@ -286,7 +286,7 @@ export default function SignUp({ 견주, 강아지, isConfirmModalOpenFn, isAgre
     }
     else {
       axios({
-        url: 'https://kiik52.com/daaang/member_select.php',
+        url: 'http://kiik52.dothome.co.kr/daaang/member_select.php',
         method: 'GET'
       })
         .then((res) => {
@@ -688,37 +688,37 @@ export default function SignUp({ 견주, 강아지, isConfirmModalOpenFn, isAgre
         count++;
       }
     });
-    // if (state.id === '') {
-    //   isConfirmModalOpenFn('아이디를 입력해 주세요');
-    // }
-    // else if (!state.isIdDoubleCheck) {
-    //   isConfirmModalOpenFn('아이디 중복 체크를 해주세요');
-    // }
-    // else if (state.pw === '') {
-    //   isConfirmModalOpenFn('비밀번호를 입력해 주세요');
-    // }
-    // else if (state.pwDoubleCheck === '') {
-    //   isConfirmModalOpenFn('한번더 비밀번호를 입력해 주세요');
-    // }
-    // else if (state.name === '') {
-    //   isConfirmModalOpenFn('이름을 입력해 주세요');
-    // }
-    // else if (state.email === '') {
-    //   isConfirmModalOpenFn('이메일을 입력해 주세요');
-    // }
-    // else if (!state.isEmailDoubleCheck) {
-    //   isConfirmModalOpenFn('이메일 중복 체크를 해주세요');
-    // }
-    // else if (state.hp === '') {
-    //   isConfirmModalOpenFn('휴대폰 번호를 입력해 주세요');
-    // }
-    // else if (!state.isHpCertified) {
-    //   isConfirmModalOpenFn('휴대폰 인증을 입력해 주세요');
-    // }
-    // else if (count !== 2) {
-    //   isConfirmModalOpenFn('이용약관동의 필수 항목을 체크해 주세요');
-    // }
-    // else {
+    if (state.id === '') {
+      isConfirmModalOpenFn('아이디를 입력해 주세요');
+    }
+    else if (!state.isIdDoubleCheck) {
+      isConfirmModalOpenFn('아이디 중복 체크를 해주세요');
+    }
+    else if (state.pw === '') {
+      isConfirmModalOpenFn('비밀번호를 입력해 주세요');
+    }
+    else if (state.pwDoubleCheck === '') {
+      isConfirmModalOpenFn('한번더 비밀번호를 입력해 주세요');
+    }
+    else if (state.name === '') {
+      isConfirmModalOpenFn('이름을 입력해 주세요');
+    }
+    else if (state.email === '') {
+      isConfirmModalOpenFn('이메일을 입력해 주세요');
+    }
+    else if (!state.isEmailDoubleCheck) {
+      isConfirmModalOpenFn('이메일 중복 체크를 해주세요');
+    }
+    else if (state.hp === '') {
+      isConfirmModalOpenFn('휴대폰 번호를 입력해 주세요');
+    }
+    else if (!state.isHpCertified) {
+      isConfirmModalOpenFn('휴대폰 인증을 입력해 주세요');
+    }
+    else if (count !== 2) {
+      isConfirmModalOpenFn('이용약관동의 필수 항목을 체크해 주세요');
+    }
+    else {
     const regExp = /^(\d{3})(\d{3,4})(\d{4})$/g;
 
     const newFormData = new FormData();
@@ -736,7 +736,7 @@ export default function SignUp({ 견주, 강아지, isConfirmModalOpenFn, isAgre
     newFormData.append('join_date', `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`);
 
     axios({
-      url: 'https://kiik52.com/daaang/member_insert.php',
+      url: 'http://kiik52.dothome.co.kr/daaang/member_insert.php',
       method: 'POST',
       data: newFormData
     })
@@ -748,7 +748,7 @@ export default function SignUp({ 견주, 강아지, isConfirmModalOpenFn, isAgre
       .catch((err) => {
         console.log('AXOIS 실패', err);
       })
-    // }
+    }
   }
 
   return (
