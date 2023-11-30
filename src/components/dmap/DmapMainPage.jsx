@@ -123,7 +123,7 @@ const Kakao = () => {
       keyword,
       (data, status, pagination) => {
         if (status === kakao.maps.services.Status.OK) {
-          console.log(data);
+          // console.log(data);
           displayPlaces(data); // 검색된 장소를 지도에 표시하는 함수 호출 추가
 
           // 검색 결과만을 기준으로 지도 영역을 조정

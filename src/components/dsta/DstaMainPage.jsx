@@ -37,30 +37,34 @@ export default function DstaMainPage() {
       url: './data/dstaMain.json',
       method: 'GET'
     })
-
-      //성공
-      .then((res) => {
-        setdstaMain(res.data.dstaMainData)
-        console.log(res.data)
-      })
-      // 에러
-      .catch((err) => {
-        console.log(`AXIOS 실패!${err}`);
-      });
-
+    .then((res) => {
+      setdstaMain(res.data.dstaMainData);
+    })
+    .catch((err) => {
+      console.log(`AXIOS 실패!${err}`);
+    });
+  
     // swiper 조회수 순 이미지 데이터
     axios({
       url: './data/dstaMain.json', // 조회수가 많은 이미지를 반환하는 API 엔드포인트로 업데이트 필요
       method: 'GET'
     })
-      .then((res) => {
-        setDstaSwiperData(res.data.dstaSwiperData); // 이미지 데이터를 상태에 저장
-      })
-      .catch((err) => {
-        console.log(`AXIOS 실패! ${err}`);
-      });
+    .then((res) => {
+      setDstaSwiperData(res.data.dstaSwiperData);
+    })
+    .catch((err) => {
+      console.log(`AXIOS 실패! ${err}`);
+    });
+  
+    // 로컬 스토리지에서 저장된 데이터를 불러와 상태 업데이트
+    const storedDataString = localStorage.getItem('dstaPostData');
+  
+    if (storedDataString) {
+      const storedData = JSON.parse(storedDataString);
+      // 불러온 데이터를 상태에 업데이트
+      setdstaMain((prevData) => [...prevData, storedData]);
+    }
   }, []);
-
   // swiper
   const swiperOptions = {
     loop: true,
@@ -174,9 +178,6 @@ export default function DstaMainPage() {
                   <img src="./img/dsta/timer.png" alt="시간 아이콘" />
                   <span>{item.timerCount}</span>
                   </div>
-
-
-                  
                 </div>
               </div>
               {isModalOpen && <DstaMainModal closeModal={closeModal} />}

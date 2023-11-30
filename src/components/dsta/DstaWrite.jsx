@@ -49,10 +49,17 @@ export default function DstaWrite() {
 
   //폼 제출
   const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log(textData, hashTag, thumbnailFile, addFiles);
-    //제출할때 필요한 코드 추후 작성
-  }
+    e.preventDefault();
+  
+    // 작성한 데이터를 로컬 스토리지에 저장
+    const postData = {
+      textData,
+      hashTag,
+      thumbnailFile,
+      addFiles,
+    };
+  };
+  
 
   return (
 
